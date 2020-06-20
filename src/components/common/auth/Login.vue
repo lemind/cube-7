@@ -47,6 +47,7 @@
 <script lang="ts">
 import { Component, Prop, Vue, Emit, Model } from "vue-property-decorator"
 import authService from "@/services/auth"
+import store from '@/store'
 
 @Component
 export default class Login extends Vue {
@@ -65,7 +66,12 @@ export default class Login extends Vue {
 
   @Emit('register')
   register() {
-    // send info to auth server
+    const newUser = {
+      email: this.email,
+      password: this.password,
+      password2: this.password2
+    }
+    store.dispatch('register', newUser)
   }
 
   @Emit('showRegister')
