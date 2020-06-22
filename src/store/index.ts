@@ -1,7 +1,7 @@
 import Vue from "vue"
 import Vuex from "vuex"
 
-import authModule from './auth'
+import authModules from './auth'
 import createAPIPlugin from '@/helpers/vuexAPIPlugin'
 import { rootEpic } from './root';
 
@@ -11,7 +11,7 @@ const APIPlugin = createAPIPlugin(rootEpic)
 
 export default new Vuex.Store({
   modules: {
-    auth: authModule
+    ...authModules
   },
   state: {},
   mutations: {},
