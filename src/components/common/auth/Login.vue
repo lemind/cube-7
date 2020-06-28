@@ -86,12 +86,22 @@ export default class Login extends Vue {
   password2 = ''
   isLogedin = false
   isRegisterShown = false
-  isEmailShown = false
-  userEmail = ''
   errors: errorsType = {
     email: [],
     password: [],
     password2: []
+  }
+
+  get storeUser() {
+    return this.$store.getters['user']
+  }
+
+  get userEmail() {
+    return this.storeUser && this.storeUser.email
+  }
+
+  get isEmailShown() {
+    return !!this.storeUser
   }
 
   login() {
@@ -115,10 +125,11 @@ export default class Login extends Vue {
   }
 
   beforeMount() {
-    if (!authService.isTokenExpired()) {
-      this.isEmailShown = true
-      this.userEmail = authService.getEmail()
-    }
+    // ToDo: get it back after token saving to LocalStorage added
+    // if (!authService.isTokenExpired()) {
+    //   this.isEmailShown = true
+    //   this.userEmail = authService.getEmail()
+    // }
   }
 
   handleBlurEmail() {

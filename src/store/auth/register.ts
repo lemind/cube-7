@@ -48,8 +48,9 @@ const registerModule = {
     register(state: any, user: UserType) {
       state.loading = true
     },
-    registerSucceeded(state: any, token: TokenType) {
-      state.token = token
+    registerSucceeded(state: any, res: any) {
+      state.token = res.token
+      state.user = res.user
       state.loading = false
     },
     requestFailed(state: any, error: ErrorType) {
@@ -66,6 +67,9 @@ const registerModule = {
       }}
       commit('register', newUserServer)
     }
+  },
+  getters: {
+    user: state => state.user
   }
 }
 
@@ -86,7 +90,7 @@ export const registerEpic: TRootEpic = action$ => action$.pipe(
           })
         }
 
-        return registerActions.success(res.result)
+        return registerActions.success(res)
       }),
       catchError(error => of(registerActions.failure(error.response.error)))
     )
