@@ -121,26 +121,33 @@ export default class Login extends Vue {
     }
   }
 
-  //ToDo: DRY
   handleBlurEmail() {
     if (!validateEmail(this.email)) {
-      this.errors.email.push(invalidEmail)
-      this.errors.email = [...new Set(this.errors.email)];
+      this.addError('email', invalidEmail)
     } else {
-      this.errors.email = [...this.errors.email.filter(err => err !== invalidEmail)]
+      this.deleteError('email', invalidEmail)
     }
   }
 
-  //ToDo: DRY
+  // ToDo: move to helpers?
+  addError(fieldName, errorMessage) {
+    this.errors[fieldName].push(errorMessage)
+    this.errors[fieldName] = [...new Set(this.errors[fieldName])]
+  }
+
+  deleteError(fieldName, errorMessage) {
+    this.errors[fieldName] = [...this.errors[fieldName].filter(err => err !== errorMessage)] 
+  }
+
   checkPasswordsEquality() {
+    if (!this.isRegisterShown) return
+
     if (this.password !== this.password2) {
-      this.errors.password.push(notEqualPasswords)
-      this.errors.password2.push(notEqualPasswords)
-      this.errors.password = [...new Set(this.errors.password)];
-      this.errors.password2 = [...new Set(this.errors.password2)];
+      this.addError('password', notEqualPasswords)
+      this.addError('password2', notEqualPasswords)
     } else {
-      this.errors.password = [...this.errors.password.filter(err => err !== notEqualPasswords)]
-      this.errors.password2 = [...this.errors.password2.filter(err => err !== notEqualPasswords)]
+      this.deleteError('password', notEqualPasswords)
+      this.deleteError('password2', notEqualPasswords)
     }
   }
 
@@ -154,7 +161,6 @@ export default class Login extends Vue {
     this.checkPasswordsEquality()
   }
 
-  @Prop()
   doesFormHaveErrors() {
     let errorsCount = 0;
     for (const field in this.errors) {
@@ -167,7 +173,6 @@ export default class Login extends Vue {
     return !!errorsCount
   }
 
-  @Prop()
   isSubmitDisabled() {
     // ToDo: show empty field warning
     if (!this.email || !this.password || !this.password2) {
