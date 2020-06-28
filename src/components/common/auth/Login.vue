@@ -105,7 +105,11 @@ export default class Login extends Vue {
   }
 
   login() {
-    console.log('__send info to auth server__');
+    const user = {
+      email: this.email,
+      password: this.password,
+    }
+    store.dispatch('login', user)
   }
 
   register() {
@@ -186,8 +190,15 @@ export default class Login extends Vue {
 
   isSubmitDisabled() {
     // ToDo: show empty field warning
-    if (!this.email || !this.password || !this.password2) {
-      return true
+    // messy
+    if (this.isRegisterShown) {
+      if (!this.email || !this.password || !this.password2) {
+        return true
+      }
+    } else {
+      if (!this.email || !this.password) {
+        return true
+      }
     }
 
     return this.doesFormHaveErrors()

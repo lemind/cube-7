@@ -6,22 +6,22 @@ import { ofType } from '@/helpers/epics'
 import { API } from '@/api/index'
 import { authResponse, ErrorType, TokenType, UserType } from '.'
 
-const registerActions = createAsyncAction(
-  'register',
-  'registerSucceeded',
+const loginActions = createAsyncAction(
+  'login',
+  'loginSucceeded',
   'requestFailed',
 )<string, authResponse, ErrorType>()
 
-export type RegisterActionType = ActionType<typeof registerActions>
+export type LoginActionType = ActionType<typeof loginActions>
 
-interface IRegisterState {
+interface ILoginState {
   token: TokenType,
   user: UserType | null,
   loading: boolean,
   error: ErrorType
 }
 
-const initialState: IRegisterState = {
+const initialState: ILoginState = {
   token: '',
   user: null,
   loading: false,
@@ -31,13 +31,13 @@ const initialState: IRegisterState = {
   }
 }
 
-const registerModule = {
+const loginModule = {
   state: () => (initialState),
   mutations: {
-    register(state: any, user: UserType) {
+    login(state: any, user: UserType) {
       state.loading = true
     },
-    registerSucceeded(state: any, res: any) {
+    loginSucceeded(state: any, res: any) {
       state.token = res.token
       state.user = res.user
       state.loading = false
@@ -49,18 +49,16 @@ const registerModule = {
     }
   },
   actions: {
-    register({ commit }: any, newUser: any) {
-      const newUserServer = {"user":{
-        "email": newUser.email,
-        "password": newUser.password
+    login({ commit }: any, user: any) {
+      const userServer = {"user":{
+        "email": user.email,
+        "password": user.password
       }}
-      commit('register', newUserServer)
+      commit('login', userServer)
     }
   },
   getters: {
-    user: (state, getters, rootState, rootGetters) => {
-      return rootGetters.userLogin || state.user
-    }
+    userLogin: state => state.user
   }
 }
 
@@ -68,24 +66,24 @@ const registerModule = {
 // TTODO
 type TRootEpic = any
 
-export const registerEpic: TRootEpic = action$ => action$.pipe(
-  ofType('register'),
+export const loginEpic: TRootEpic = action$ => action$.pipe(
+  ofType('login'),
   mergeMap(action => {
-    return API.signup(action as RegisterActionType).pipe(
+    return API.login(action as LoginActionType).pipe(
       map((resRaw: any) => {
         const res = resRaw.response
 
         if (!res.success) {
-          return registerActions.failure({
+          return loginActions.failure({
             ...res.error,
           })
         }
 
-        return registerActions.success(res)
+        return loginActions.success(res)
       }),
-      catchError(error => of(registerActions.failure(error.response.error)))
+      catchError(error => of(loginActions.failure(error.response.error)))
     )
   })
 )
 
-export default registerModule
+export default loginModule
