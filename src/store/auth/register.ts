@@ -1,5 +1,5 @@
 import { mergeMap, map, catchError } from 'rxjs/operators'
-import { createAsyncAction } from 'typesafe-actions'
+import { createAsyncAction, ActionType } from 'typesafe-actions'
 import { of } from 'rxjs'
 
 import { ofType } from '@/helpers/epics'
@@ -23,9 +23,7 @@ type UserType = {
   email: string
 }
 
-
-// TToDo
-export type AuthActionType = any
+export type RegisterActionType = ActionType<typeof registerActions>
 
 interface IRegisterState {
   token: TokenType,
@@ -40,7 +38,7 @@ const initialState: IRegisterState = {
   loading: false,
   error: {
     form: {},
-    common: []
+    common: [] //connection errors and so
   }
 }
 
@@ -55,14 +53,13 @@ const registerModule = {
       state.loading = false
     },
     requestFailed(state: any, error: ErrorType) {
-      console.log('+_err', error);
+      // arrange errors by fields
       state.error = error
       state.loading = false
     }
   },
   actions: {
     register({ commit }: any, newUser: any) {
-      console.log('commit register', newUser);
       const newUserServer = {"user":{
         "email": newUser.email,
         "password": newUser.password
@@ -79,7 +76,7 @@ type TRootEpic = any
 export const registerEpic: TRootEpic = action$ => action$.pipe(
   ofType('register'),
   mergeMap(action => {
-    return API.signup(action).pipe(
+    return API.signup(action as RegisterActionType).pipe(
       map((resRaw: any) => {
         const res = resRaw.response
 

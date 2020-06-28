@@ -1,18 +1,19 @@
 import { ajax } from 'rxjs/ajax'
 import { API_HOST, HEADERS } from '../config'
-import { AuthActionType } from 'src/store/auth'
+import { RegisterActionType } from 'src/store/auth/register'
 // import { IUserSignup, IUserLogin } from 'models/Auth'
 import { TBackDataError } from './index'
 
 export const authAPI = {
-  login: (action: AuthActionType) => {
+  // TToDo: LoginActionType | AuthActionType
+  login: (action: RegisterActionType) => {
     return ajax.post(
       `${API_HOST}/user/login`,
       action.payload,
       HEADERS
     )
   },
-  signup: (action: AuthActionType) => {
+  signup: (action: RegisterActionType) => {
     return ajax.post(
       `${API_HOST}/user/signup`,
       action.payload,
