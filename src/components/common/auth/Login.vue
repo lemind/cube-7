@@ -190,15 +190,10 @@ export default class Login extends Vue {
 
   isSubmitDisabled() {
     // ToDo: show empty field warning
-    // messy
     if (this.isRegisterShown) {
-      if (!this.email || !this.password || !this.password2) {
-        return true
-      }
+      return (!this.email || !this.password || !this.password2)
     } else {
-      if (!this.email || !this.password) {
-        return true
-      }
+      return (!this.email || !this.password)
     }
 
     return this.doesFormHaveErrors()

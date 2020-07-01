@@ -60,7 +60,10 @@ const registerModule = {
   getters: {
     user: (state, getters, rootState, rootGetters) => {
       return rootGetters.userLogin || state.user
-    }
+    },
+    token: (state, getters, rootState, rootGetters) => {
+      return rootGetters.userToken || state.token
+    },
   }
 }
 

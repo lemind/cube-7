@@ -58,7 +58,8 @@ const loginModule = {
     }
   },
   getters: {
-    userLogin: state => state.user
+    userLogin: state => state.user,
+    userToken: state => state.token,
   }
 }
 

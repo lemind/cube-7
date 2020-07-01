@@ -1,4 +1,5 @@
 import { authAPI } from './auth'
+import { testAPI } from './test'
 
 export type TBackDataError = {
   id: number,
@@ -6,5 +7,6 @@ export type TBackDataError = {
 }
 
 export const API = {
-  ...authAPI
+  ...authAPI,
+  ...testAPI,
 }
