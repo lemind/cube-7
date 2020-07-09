@@ -1,8 +1,6 @@
 import { ajax } from 'rxjs/ajax'
 import { API_HOST, HEADERS } from '../config'
 import { RegisterActionType } from 'src/store/auth/register'
-// import { IUserSignup, IUserLogin } from 'models/Auth'
-import { TBackDataError } from './index'
 import { LoginActionType } from '@/store/auth/login'
 
 export const authAPI = {
