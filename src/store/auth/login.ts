@@ -4,9 +4,10 @@ import { of } from 'rxjs'
 
 import { ofType } from '@/helpers/epics'
 import { API } from '@/api/index'
+import { TRootEpic } from '@/store/root'
 import { authResponse, ErrorType, TokenType, UserType } from '.'
 
-const loginActions = createAsyncAction(
+export const loginActions = createAsyncAction(
   'login',
   'loginSucceeded',
   'requestFailed',
@@ -63,9 +64,6 @@ const loginModule = {
   }
 }
 
-
-// TTODO
-type TRootEpic = any
 
 export const loginEpic: TRootEpic = action$ => action$.pipe(
   ofType('login'),
