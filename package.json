@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "core-js": "^3.6.4",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "redux": "^4.0.5",
     "redux-observable": "^1.2.0",
     "register-service-worker": "^1.7.1",
